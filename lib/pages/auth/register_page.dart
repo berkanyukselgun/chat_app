@@ -1,4 +1,6 @@
+import 'package:chat_app/helper/helper_function.dart';
 import 'package:chat_app/pages/auth/login_page.dart';
+import 'package:chat_app/pages/home_screen.dart';
 import 'package:chat_app/service/auth_service.dart';
 import 'package:chat_app/widgets/widgets.dart';
 import 'package:flutter/foundation.dart';
@@ -169,11 +171,16 @@ class _RegisterPageState extends State<RegisterPage> {
       });
       await authService
           .registerUserWithEmailandPassword(fullName, email, password)
-          .then((value) {
+          .then((value) async {
         if (value == true) {
           //saving the shared preference state
+
+          await HelperFunction.saveUserLoggedInStatus(true);
+          await HelperFunction.saveUserEmailSF(email);
+          await HelperFunction.saveUserNameSF(fullName);
+          nextScreenReplace(context, const HomeScreen());
         } else {
-          showSnackBar(context, value, Colors.red);
+          showSnackBar(context, Colors.red, value);
           setState(() {
             _isLoading = false;
           });
