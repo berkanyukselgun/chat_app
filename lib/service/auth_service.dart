@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:chat_app/helper/helper_function.dart';
 import 'package:chat_app/service/database_Service.dart';
 import 'package:firebase_auth/firebase_auth.dart';

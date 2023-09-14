@@ -3,7 +3,6 @@ import 'package:chat_app/pages/auth/login_page.dart';
 import 'package:chat_app/pages/home_screen.dart';
 import 'package:chat_app/service/auth_service.dart';
 import 'package:chat_app/widgets/widgets.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
