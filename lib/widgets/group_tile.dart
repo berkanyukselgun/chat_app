@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'package:chat_app/pages/chat_page.dart';
+import 'package:chat_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class GroupTile extends StatefulWidget {
@@ -19,7 +20,15 @@ class _GroupTileState extends State<GroupTile> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        nextScreen(
+            context,
+            ChatPage(
+              groupId: widget.groupId,
+              groupName: widget.groupName,
+              userName: widget.userName,
+            ));
+      },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
         child: ListTile(
