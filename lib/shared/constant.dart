@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
 
 class Constants {
-  final primaryColor = const Color(0xFFee7b64);
+  final primaryColor = Color.fromARGB(255, 146, 51, 84);
 }
