@@ -17,6 +17,7 @@ class _SearchPageState extends State<SearchPage> {
   QuerySnapshot? searchSnapshot;
   bool hasUserSearched = false;
   String userName = "";
+  bool isJoined = false;
   User? user;
   @override
   void initState() {
@@ -31,6 +32,14 @@ class _SearchPageState extends State<SearchPage> {
       });
     });
     user = FirebaseAuth.instance.currentUser;
+  }
+
+  String getName(String r) {
+    return r.substring(r.indexOf("_") + 1);
+  }
+
+  String getId(String res) {
+    return res.substring(0, res.indexOf("_"));
   }
 
   @override
@@ -136,8 +145,46 @@ class _SearchPageState extends State<SearchPage> {
         : Container();
   }
 
+  joinedOrNot(
+      String userName, String groupId, String groupName, String admin) async {
+    await DatabaseService(uid: user!.uid)
+        .isUserJoined(groupName, groupId, userName)
+        .then((value) {
+      setState(() {
+        isJoined = value;
+      });
+    });
+  }
+
   Widget groupTile(
       String userName, String groupId, String admin, String groupName) {
-    return Text("hello");
+    joinedOrNot(userName, groupId, groupName, admin);
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+      leading: CircleAvatar(
+        backgroundColor: Theme.of(context).primaryColor,
+        radius: 30,
+        child: Text(
+          groupName.substring(0, 1).toUpperCase(),
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+      title: Text(
+        groupName,
+        style: TextStyle(fontWeight: FontWeight.w600),
+      ),
+      subtitle: Text("Admin: ${getName(admin)}"),
+      trailing: InkWell(
+        onTap: () async {},
+        child: isJoined
+            ? Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.black,
+                    border: Border.all(color: Colors.white, width: 1)),
+              )
+            : Container(),
+      ),
+    );
   }
 }
