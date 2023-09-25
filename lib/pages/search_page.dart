@@ -1,5 +1,7 @@
 import 'package:chat_app/helper/helper_function.dart';
+import 'package:chat_app/pages/chat_page.dart';
 import 'package:chat_app/service/database_Service.dart';
+import 'package:chat_app/widgets/widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -175,15 +177,51 @@ class _SearchPageState extends State<SearchPage> {
       ),
       subtitle: Text("Admin: ${getName(admin)}"),
       trailing: InkWell(
-        onTap: () async {},
+        onTap: () async {
+          await DatabaseService(uid: user!.uid)
+              .toggleGroupJoin(groupId, userName, groupName);
+          if (isJoined) {
+            setState(() {
+              isJoined = !isJoined;
+            });
+            showSnackBar(context, Colors.green, "Succesfully joined he group");
+            Future.delayed(Duration(seconds: 2), () {
+              nextScreen(
+                  context,
+                  ChatPage(
+                      groupId: groupId,
+                      groupName: groupName,
+                      userName: userName));
+            });
+          } else {
+            setState(() {
+              isJoined = !isJoined;
+              showSnackBar(context, Colors.red, "Left the group $groupName");
+            });
+          }
+        },
         child: isJoined
             ? Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.black,
                     border: Border.all(color: Colors.white, width: 1)),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Text(
+                  "Joined",
+                  style: TextStyle(color: Colors.white),
+                ),
               )
-            : Container(),
+            : Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Theme.of(context).primaryColor),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Text(
+                  "Join Now",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
       ),
     );
   }
